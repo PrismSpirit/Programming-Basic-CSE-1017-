@@ -7,5 +7,6 @@ def isleapyear(year):
     else:
         return False
 
+
 y = str(input())
 print(y,isleapyear(y))
