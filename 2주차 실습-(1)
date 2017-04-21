@@ -1,0 +1,31 @@
+def score_average():
+	count = 0
+	total = 0
+	failed = 0
+	while True:
+		a = str(input())
+		while not a.isdigit():
+			a = str(input())
+		a = int(a)
+		while not 0 <= a <= 100:
+			a = int(input())
+
+		if 60 <= a <= 100:
+			count += 1
+			total += a
+		elif 0 < a < 60:
+			failed += 1
+		if a == 0:
+			break
+
+    if count == 0:
+		print("0")
+	elif count != 0:
+		avrg = round(total/count,1)
+		print(count)
+		print(avrg)
+	if failed != 0:
+		print(failed)
+
+
+score_average()
