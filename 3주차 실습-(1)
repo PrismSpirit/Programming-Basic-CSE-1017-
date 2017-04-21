@@ -1,0 +1,21 @@
+def remove_sign(s):
+    s = str(s)
+    if s[0] == "+":
+        return s[1:]
+    elif s[0] == "-":
+        sign = s[0]
+        return s[1:]
+    else:
+        return s
+
+def get_int_signed(message):
+    sign = 0
+    s = str(input(message))
+    while not remove_sign(s).isdigit():
+        s = str(input(message))
+    if sign == "-":
+        return sign + s
+    s = int(s)
+    return s
+
+print(get_int_signed("정수를 입력하시오"))
