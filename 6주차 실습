@@ -1,0 +1,154 @@
+def __print_result():
+    import os
+    os.system('cat result.txt')
+
+def find_last(filename,key):
+    infile = open(filename, "r")
+    outfile = open("result.txt", "w")
+    text = infile.read()
+    pos = text.rfind(key)
+    if pos == -1:
+        outfile.write(key + " is not found.\n")
+    else:
+        outfile.write(key + " is at " + str(pos) + ".\n")
+    outfile.close()
+    infile.close()
+    print("done")
+
+def find_all(filename,key):
+    infile = open(filename, "r")
+    outfile = open("result.txt", "w")
+    text = infile.read()
+    pos = text.find(key)
+    if pos == -1:
+        outfile.write(key + " is not found.\n")
+    else:
+        while True:
+            if pos != -1:
+                outfile.write(key + " is at " + str(pos) + ".\n")
+                pos = text.find(key,pos+1)
+            else:
+                break
+    outfile.close()
+    infile.close()
+    print("done")
+
+def find_all_count(filename,key):
+    infile = open(filename, "r")
+    outfile = open("result.txt", "w")
+    text = infile.read()
+    pos = text.find(key)
+    count = 0
+    if pos == -1:
+        outfile.write(key + " is not found.\n")
+    else:
+        while True:
+            if pos != -1:
+                count += 1
+                outfile.write(key + " is at " + str(pos) + ".\n")
+                pos = text.find(key,pos+1)
+            else:
+                break
+    outfile.write("# 총 " + str(count) + "번 등장\n")
+    outfile.close()
+    infile.close()
+    print("done")
+
+def one_sentence_per_line(filename):
+    infile = open(filename, "r")
+    outfile = open("result.txt", "w")
+    text = infile.read()
+    count = 0
+    for c in text:
+        outfile.write(c)
+        if c == ".":
+            outfile.write("\n\n")
+            count += 1
+        elif c == "?":
+            outfile.write("\n\n")
+            count += 1
+    outfile.write("문장이 총 " + str(count) + "개\n")
+    outfile.close()
+    infile.close()
+    print("done")
+
+def find_all_sentence(filename,key):
+    infile = open(filename, "r")
+    outfile = open("result.txt", "w")
+    text = infile.read()
+    count_dp = 0   # --- 일회용 count
+    count = 0      # --- 총 갯수 count
+    count_st = 0   # --- 문장 갯수 count
+    for c in text:
+        if c == ".": # .을 발견했을 때
+            (x,y,z) = text.partition(".") # .을 기준으로 나눔
+            ppos = x.find(key) # 그 문장에서 key를 찾는 행동을 함
+            while True: # 한 문장에 key를 찾는 행동을 반복합니다.
+                if ppos != -1: # 문장에서 key 가 있을 때
+                    count += 1 # 총 key의 갯수를 구합니다.
+                    count_dp += 1 # 일회용 count를 올립니다.
+                    ppos = x.find(key,ppos+1) # 다음 key를 찾으려합니다.
+                else:
+                    break # 안쪽 while True문을 탈출합니다.
+            if count_dp != 0: # 안쪽 while True 에서 무언가 입력 됐을 때.
+                count_dps = count_dp # 일회용 count를 저장해둡니다.
+                outfile.write("'" + key + "'" + "이(가)" + str(count_dps) + "번 등장\n")
+                outfile.write(x + y + "\n")
+                count_st += 1
+            count_dp = 0
+            text = z # . 이후의 문장을 새로운 text로 하여 반복문을 돌 때 다시 나눕니다.
+        if c == "?":
+            (x,y,z) = text.partition("?")
+            ppos = x.find(key)
+            while True: # 한 문장에 key를 찾는 행동을 반복합니다.
+                if ppos != -1: # 문장에서 key 가 있을 때
+                    count += 1 # 총 key의 갯수를 구합니다.
+                    count_dp += 1 # 일회용 count를 올립니다.
+                    ppos = x.find(key,ppos+1) # 다음 key를 찾으려합니다.
+                else:
+                    break # 안쪽 while True문을 탈출합니다.
+            if count_dp != 0: # 안쪽 while True 에서 무언가 입력 됐을 때.
+                count_dps = count_dp # 일회용 count를 저장해둡니다.
+                outfile.write("'" + key + "'" + "이(가)" + str(count_dps) + "번 등장\n")
+                outfile.write(x + y + "\n")
+                count_st += 1
+            count_dp = 0
+            text = z # . 이후의 문장을 새로운 text로 하여 반복문을 돌 때 다시 나눕니다.
+
+    outfile.write("'" + key + "'" + "이(가)" + str(count_st) + "개 문장에서" + str(count) + "번 등장\n")
+    outfile.close()
+    infile.close()
+    print("done")
+
+
+# 실습 1
+find_last("article.txt", "컴퓨터")
+__print_result()
+find_last("article.txt", "데스크탑")
+__print_result()
+find_last("article.txt", "한양대")
+__print_result()
+
+# 실습 2
+find_all("article.txt", "컴퓨터")
+__print_result()
+find_all("article.txt", "데스크탑")
+__print_result()
+find_all("article.txt", "한양대")
+__print_result()
+
+# 실습 3
+find_all_count("article.txt", "컴퓨터")
+__print_result()
+find_all_count("article.txt", "데스크탑")
+__print_result()
+find_all_count("article.txt", "한양대")
+__print_result()
+
+# 실습 4
+one_sentence_per_line("article.txt")
+__print_result()
+
+# 실습 5
+find_all_sentence("article.txt", "컴퓨터")
+__print_result()
